@@ -3,3 +3,17 @@
   top: 0;
   left: 0;
 }
+
+.selection {
+  position: absolute;
+  right: 0;
+  margin: 1rem 4rem;
+  color: white;
+}
+
+.selection button {
+  border: 0;
+  padding: 0.5rem;
+  border-radius: 3px;
+  cursor: pointer;
+}

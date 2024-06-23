@@ -39,10 +39,35 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const controls = new OrbitControls(camera, renderer.domElement);
 
-  const monkeyObject = new THREE.Object3D();
   var loader = new GLTFLoader();
+  let animalObjects = [];
 
-  // Orangutan by cameron_ [CC-BY] (https://creativecommons.org/licenses/by/3.0/) via Poly Pizza (https://poly.pizza/m/kD8hdFa32e)
+  const orangutanObject = new THREE.Object3D();
+
+  loader.load(
+    "/items/Orangutan.glb",
+    // Orangutan by cameron_ [CC-BY] (https://creativecommons.org/licenses/by/3.0/) via Poly Pizza (https://poly.pizza/m/kD8hdFa32e)
+    function(glb) {
+      console.log(glb);
+
+      const root = glb.scene;
+
+      // orangutanObject.add(root);
+
+      root.scale.set(4.5, 4.5, 4.5);
+
+      animalObjects.push({ item: orangutanObject, root });
+      scene.add(orangutanObject);
+    },
+    function(xhr) {
+      console.log((xhr.loaded / xhr.total) * 100 + "% loaded");
+    },
+    function(error) {
+      console.error("An error happened", error);
+    },
+  );
+
+  const monkeyObject = new THREE.Object3D();
 
   loader.load(
     // Monkey by marioba [CC-BY] (https://creativecommons.org/licenses/by/3.0/) via Poly Pizza (https://poly.pizza/m/AbqX1f25xK)
@@ -52,9 +77,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const root = glb.scene;
 
-      monkeyObject.add(root);
+      // monkeyObject.add(root);
 
       root.scale.set(3, 3, 3);
+
+      animalObjects.push({ item: monkeyObject, root });
       scene.add(monkeyObject);
     },
     function(xhr) {
@@ -69,10 +96,30 @@ document.addEventListener("DOMContentLoaded", () => {
   light.position.set(2, 5, 5);
   scene.add(light);
 
+  let activeIndex = -1;
+
+  const buttons = document.querySelectorAll(".selection button");
+  buttons.forEach((button, index) => {
+    button.addEventListener("click", () => {
+      console.log("Button index: ", index);
+      activeIndex = index;
+
+      animalObjects.forEach((animal, index) => {
+        if (index === activeIndex) {
+          animal.item.add(animal.root);
+        } else {
+          animal.item.remove(animal.root);
+        }
+      });
+    });
+  });
+
   function animate() {
     requestAnimationFrame(animate);
     controls.update();
-    monkeyObject.rotation.y -= 0.02;
+
+    const activeObject = animalObjects[activeIndex];
+    activeObject !== undefined ? (activeObject.item.rotation.y -= 0.02) : null;
     renderer.render(scene, camera);
   }
 
