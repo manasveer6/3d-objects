@@ -42,8 +42,11 @@ document.addEventListener("DOMContentLoaded", () => {
   const monkeyObject = new THREE.Object3D();
   var loader = new GLTFLoader();
 
+  // Orangutan by cameron_ [CC-BY] (https://creativecommons.org/licenses/by/3.0/) via Poly Pizza (https://poly.pizza/m/kD8hdFa32e)
+
   loader.load(
-    "./items/Monkey.glb",
+    // Monkey by marioba [CC-BY] (https://creativecommons.org/licenses/by/3.0/) via Poly Pizza (https://poly.pizza/m/AbqX1f25xK)
+    "/items/Monkey.glb",
     function(glb) {
       console.log(glb);
 
@@ -69,7 +72,7 @@ document.addEventListener("DOMContentLoaded", () => {
   function animate() {
     requestAnimationFrame(animate);
     controls.update();
-    monkeyObject.rotation.y += 0.02;
+    monkeyObject.rotation.y -= 0.02;
     renderer.render(scene, camera);
   }
 
